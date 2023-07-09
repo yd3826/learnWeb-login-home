@@ -3,7 +3,7 @@ import {useSelector} from "react-redux";
 
 const { Header, Content, Footer } = Layout;
 const Home = () => {
-    const logstate=useSelector(state=>state);
+    const logstate=useSelector(state=>state.UserReducer);
     const {
         token: { colorBgContainer },
     } = theme.useToken();

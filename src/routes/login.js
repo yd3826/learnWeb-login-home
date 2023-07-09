@@ -5,10 +5,13 @@ import {useState} from "react";
 import {useDispatch,useSelector} from "react-redux";
 import {setUserInfo,changeUsername} from "../Redux/Action/user";
 import {Link} from "react-router-dom";
+import {login} from "../Redux/Action";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 export default function Login()
 {
-    const username = useSelector(state=>state.username);
+    const navigate = useNavigate();
+    const username = useSelector(state=>state.UserReducer.username);
     const [password,setPassword] = useState('');
     const dispatch = useDispatch();
     const baseUrl = 'http://127.0.0.1:8000/user/';
@@ -20,6 +23,7 @@ export default function Login()
                 console.log(response.data);
                 const result = response.data;
                 dispatch(setUserInfo(result.username,result.userid,result.nickname));
+                dispatch(login());
             })
             .catch(function (error){
                 console.log(error);
@@ -72,12 +76,19 @@ export default function Login()
                     </a>
                 </Form.Item>
                 <Form.Item>
-                    <Button type="primary" htmlType="submit" className={'login-form-button'} onClick={()=>getApi()}>
-                        <Link to='/home' replace>
-                            Log in
-                        </Link>
+                    <Button
+                        type="primary"
+                        htmlType="submit"
+                        className={'login-form-button'}
+                        onClick={()=>{
+                            getApi();
+                            navigate('/home');
+                        }}
+                        style={{left:190}}
+                            >
+                        Log in
                     </Button>
-                    Or <a href={''}>register now!</a>
+                    <a href={''}>register now!</a>
                 </Form.Item>
             </Form>
             <Card headStyle={{textAlign:'center'}} title={'实时显示'} style={{width:300,left:80}}>
